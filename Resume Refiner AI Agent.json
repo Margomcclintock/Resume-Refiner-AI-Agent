@@ -1,0 +1,173 @@
+{
+  "name": "Resume Refiner AI Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Resume Refiner AI Agent",
+        "formDescription": "Upload your resume into the Resume Refiner AI Agent to have tailored resume suggestions based on the URL you've chosen. ",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Resume",
+              "fieldType": "file"
+            },
+            {
+              "fieldLabel": "Job Link",
+              "placeholder": "=Enter Job title",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "Enter email here",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -208,
+        0
+      ],
+      "id": "906ed6f8-d723-44f2-97e3-2ee05633b573",
+      "name": "On form submission",
+      "webhookId": "1852f146-02fd-4590-92dc-e22432eeefe0"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an AI Resume Refiner that specializes in applicant tracking systems. You’ve been given a user’s resume along with a job posting they want to apply to. Your goal is to suggest clear, specific ways the user can tailor their resume to better match that job.\n\nInstructions:\nStart by analyzing the job post and identifying the key skills, qualifications, and responsibilities. Then, look at the resume and find areas that could be improved, rewritten, or expanded to better align with what the employer is looking for.\n\nYour feedback should be:\nPractical and easy to follow. Show the user exactly how to improve their resume — reworded bullet points, updated skills, added keywords, or suggestions to highlight relevant experience. If something important is missing, call it out and explain where it could be added. Improve how responsiblilities and key words are described, especially when measuring results where possible.\n\nDO NOT lie about skills. Don't misinterpret the job role. \nReturn your suggestions in this structure:\n\nSummary:\nA short paragraph summarizing what needs improvement (lack of keywords, vague experience, missing alignment with the job role).\n\nSuggested Changes:\n- Section: [ Work Experience]\n  Original: [Original bullet or sentence]\n  Suggestion: [Suggested rewrite to align with the job posting]\n\n- Section: [ Skills]\n  Original: [Old skill list]\n  Suggestion: [Updated skill list with better alignment to the job posting]",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "41ed1cbb-1925-45d2-8a50-8d9691ea32f0",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "gpt-3.5-turbo"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        64,
+        208
+      ],
+      "id": "841c6827-4a50-476b-bb45-6d98f28fff78",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "wc91zZeZALOPTjpO",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        384,
+        208
+      ],
+      "id": "2853812a-5328-41f3-8f13-fab8e181ca7c",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "sendTo": "margo.sn.mcclintock@gmail.com",
+        "subject": "Your Refined Resume is Ready!",
+        "message": "Thank you for using the Resume Refiner. Below you will have your Applicant Tracking System(ATS) optimized resume. ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        560,
+        0
+      ],
+      "id": "6d9da972-3fda-415d-bbf6-46e5e9fdd6cb",
+      "name": "Send a message",
+      "webhookId": "7a3b1e42-94d1-4efd-89d3-48f57e1b0961",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "4JscZYmTkRr48fZn",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6b51a110-bee0-4769-95eb-e6b39b84f83c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "deb9fe7f94be47e504728ed52ae100845563bb5c0e75ac94a04f5be2499d9936"
+  },
+  "id": "s58MAFBPLWcn9H27",
+  "tags": []
+}
