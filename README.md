@@ -6,17 +6,22 @@ This project is an AI-powered Resume Refiner built in n8n. It takes a user-submi
 ## Building the Agent
 <img width="1158" height="467" alt="image" src="https://github.com/user-attachments/assets/bb37e86b-b8c7-4bc5-8ee4-5aff469d1df0" />
 
-### What approach did you take to design your agent? 
+#### What approach did you take to design your agent? 
 - I started with the end in mind. I focused first on what I wanted the user to receive, which was a clear, useful email with personalized resume edits. That helped me reverse engineer the steps the workflow needed to take to achieve my goal.
 - Secondly, I built and tested in small chunks. I added and tested each piece as I went to catch issues early.
-- Thirdly, I focused on clarity over complexity. I kept the nodes in the workflow clean and grouped by purpose. If I ever go back to change something later, it is easy to follow.
+- Thirdly, I focused on clarity over complexity. I kept the nodes in the workflow clean and grouped by purpose. If I ever need to go back and change something later, it will be easy to follow.
+#### What challenges did you face in parsing, formatting, or integrating?
+- Long resumes or detailed job posts sometimes made the AI call take too long or cut off the output. I had to trim the inputs and tell the AI to focus only on key sections like Summary, Experience, and Skills.
+
+#### How did you ensure that the AI returned JSON reliably?
+- I simplified the prompt over time. At first, I tried to make the AI do too much. Over time, I stripped the prompt down to  focus on clear, direct resume suggestions only.
 ## Trobleshooting
-### What issues did you encounter and how did you resolve them?
+#### What issues did you encounter and how did you resolve them?
 - AI suggested experiences the user didn’t have. To Fix, I updated the prompt so AI would not invent or add content that isn’t already in the resume. I only wanted AI to rephrase and enhance existing material.
 - "Insufficient quota detected"
 <img width="324" height="87" alt="image" src="https://github.com/user-attachments/assets/7a4320f1-1ceb-44ca-a604-582f04074b85" />
-    - My OpenAI account did not have enough credits or capacity to fulfill my initial request.  To fix, I needed to increase my usage limit to test various categories .
+
+  -  - My OpenAI account did not have enough credits or capacity to fulfill my initial request.  To fix, I needed to increase my usage limit to test various categories .
 ## Optimization
-### What might you improve or add in future iterations?
-- Multi-job support
-  - It would be helpful if users could paste in several job descriptions at once and get a comparison report showing how their resume stacks up to each one.
+#### What might you improve or add in future iterations?
+- It would be helpful if users could paste in several job descriptions at once and get a comparison report showing how their resume stacks up to each one.
